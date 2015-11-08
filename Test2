@@ -1,0 +1,146 @@
+namespace Test2
+{
+    using System;
+    using System.Text;
+
+    public class Program
+    {
+        public static void Main()
+        {
+            Console.WriteLine("Enter height(rows) of the matrix: ");
+            int n = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter width(cols) of the matrix: ");
+            int m = int.Parse(Console.ReadLine());
+            char[,] array = new char[n, m];
+            int countOfTimeWordFound = 0;
+
+            for (int i = 0; i < n; i += 1)
+            {
+                string entry = Console.ReadLine().Trim();
+
+                for (int j = 0; j < entry.Length; j += 1)
+                {
+                    array[i, j] = entry[j];
+                }
+            }
+
+            Console.WriteLine("Enter word to find: ");
+
+            string word = Console.ReadLine();
+
+            StringBuilder horizontalWord = new StringBuilder();
+            StringBuilder verticalWord = new StringBuilder();
+            StringBuilder diagonalWordRight = new StringBuilder();
+            StringBuilder diagonalWorDown = new StringBuilder();
+
+            ////horizontal checking
+            if (array.GetLength(1) > 1)
+            {
+                for (int i = 0; i < n; i += 1)
+                {
+                    for (int j = 0; j < m; j += 1)
+                    {
+                        horizontalWord.Append(array[i, j]);
+
+                    }
+
+                    countOfTimeWordFound += howManyTimesWordRepeatsOnALine(horizontalWord.ToString(), word);
+                    horizontalWord.Clear();
+                }
+            }
+
+            ////vertical checking
+
+            if ((array.GetLength(0) == 1 && array.GetLength(1) == 1) || (array.GetLength(0) != 1 && array.GetLength(1) == 1) ||
+               (array.GetLength(0) > 1 && array.GetLength(1) > 1))
+            {
+                for (int d = 0; d < array.GetLength(1); d += 1)
+                {
+                    for (int f = 0; f < array.GetLength(0); f += 1)
+                    {
+                        verticalWord.Append(array[f, d]);
+                    }
+
+                    countOfTimeWordFound += howManyTimesWordRepeatsOnALine(verticalWord.ToString(), word);
+                    verticalWord.Clear();
+                }
+            }
+            //RIGHT SIDE DIAGONAL CHECKING
+
+            if (array.GetLength(1) > 1 && array.GetLength(0) > 1)
+            {
+                for (int colOnRowZero = 0; colOnRowZero < array.GetLength(1) - 1; colOnRowZero += 1)
+                {
+                    int col = colOnRowZero;
+
+                    for (int row = 0; row < n; row += 1)
+                    {
+                        diagonalWordRight.Append(array[row, col]);
+                        col++;
+
+                        if (col == m)
+                        {
+                            break;
+                        }
+                    }
+
+                    countOfTimeWordFound += howManyTimesWordRepeatsOnALine(diagonalWordRight.ToString(), word);
+                    diagonalWordRight.Clear();
+                }
+
+
+                ////CHECK DIAGONAL DOWN SIDE
+
+                for (int RowOnColZero = 1; RowOnColZero < array.GetLength(1) - 1; RowOnColZero += 1)
+                {
+                    int row = RowOnColZero;
+
+                    for (int col = 0; col < m; col += 1)
+                    {
+                        diagonalWorDown.Append(array[row, col]);
+                        row++;
+
+                        if (row == n)
+                        {
+                            break;
+                        }
+                    }
+
+                    countOfTimeWordFound += howManyTimesWordRepeatsOnALine(diagonalWorDown.ToString(), word);
+                    diagonalWorDown.Clear();
+                }
+            }
+            ////OUTPUT
+            Console.WriteLine("Number of times found: {0}", countOfTimeWordFound);
+        }
+
+        public static int howManyTimesWordRepeatsOnALine(string line, string searchedWord)
+        {
+            int timesFound = 0;
+            int index = -1;
+
+            while (true)
+            {
+                index++;
+
+                if (index == line.Length)
+                {
+                    break;
+                }
+
+                index = line.IndexOf(searchedWord, index);
+
+                if (index < 0)
+                {
+                    break;
+                }
+                else
+                {
+                    timesFound++;
+                }
+            }
+
+            return timesFound;
+        }
+    }
+}
