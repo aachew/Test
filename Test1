@@ -1,0 +1,101 @@
+namespace Test1
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    public class Program
+    {
+        static void Main()
+        {
+            var splitArr = new List<char>();
+
+            
+            var xAndYCoordinates = Console.ReadLine().Trim().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var x =int.Parse(xAndYCoordinates[0]);
+            var y =int.Parse(xAndYCoordinates[1]);
+
+            
+            string directions = Console.ReadLine().Trim();
+            bool haveBeenInverted = false;           
+
+            foreach(var ch in directions)
+            {
+                splitArr.Add(ch);
+            }
+
+            //Console.WriteLine(x);
+            //Console.WriteLine(y);
+
+            //foreach(var el in splitArr)
+            //{
+            //    Console.WriteLine(el);
+            //}
+
+            for (int i = 0; i < splitArr.Count; i += 1)
+            {
+                if (splitArr[i] == '~')
+                {
+                    haveBeenInverted = true;
+                    continue;
+                }
+
+                switch (splitArr[i])
+                {
+                    case '>':
+                        if (haveBeenInverted)
+                        {
+                            x--;
+                        }
+                        else
+                        {
+                            x++;
+                        }
+
+                        break;
+
+                    case '<':
+                        if (haveBeenInverted)
+                        {
+                            x++;
+                        }
+                        else
+                        {
+                            x--;
+                        }
+
+                        break;
+
+                    case '^':
+                        if (haveBeenInverted)
+                        {
+                            y--;
+                        }
+                        else
+                        {
+                            y++;
+                        }
+
+                        break;
+
+                    case 'v':
+                        if (haveBeenInverted)
+                        {
+                            y++;
+                        }
+                        else
+                        {
+                            y--;
+                        }
+
+                        break;
+                }
+            }
+
+            Console.WriteLine(x);
+            Console.WriteLine(y);
+        }
+    }
+}
